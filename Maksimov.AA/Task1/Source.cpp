@@ -25,7 +25,7 @@ int main()
 		m = m / 10;
 		i++;
 	}
-	printf("%d", n); 
+	printf("%d", n);
 	getchar();
 	getchar();
 }
