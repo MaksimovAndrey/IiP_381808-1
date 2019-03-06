@@ -21,6 +21,10 @@ Triangle::Triangle()
 	a = 0.0;
 	b = 0.0;
 	c = 0.0;
+	perimeter = 0;
+	area = 0;
+	existence = -1;
+	type = -1;
 }
 Triangle::Triangle(double _a, double _b, double _c)
 {
@@ -56,6 +60,10 @@ Triangle::~Triangle()
 	a = 0.0;
 	b = 0.0;
 	c = 0.0;
+	perimeter = 0;
+	area = 0;
+	existence = -1;
+	type = -1;
 }
 int main()
 {
