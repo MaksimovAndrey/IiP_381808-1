@@ -3,16 +3,10 @@
 #include <string>
 #include "ClassRational.h"
 
-
-Rational::Rational()
+Rational::Rational(const Rational& r)
 {
-	n = 0;
-	m = 1;
-}
-Rational::Rational(int n1)
-{
-	n = n1;
-	m = 1;
+	n = r.n;
+	m = r.m;
 }
 Rational::Rational(int n1, int m1)
 {
@@ -71,8 +65,7 @@ string Rational::getFraction()
 	else
 		return to_string(n) + '/' + to_string(m);
 }
-
-Rational Rational::operator = (const Rational& r)
+Rational& Rational::operator = (const Rational& r)
 {
 	n = r.n;
 	m = r.m;
@@ -174,9 +167,9 @@ bool Rational::operator != (const Rational& r)
 		return true;
 }
 
-ostream & operator << (ostream & stream, Rational& r)
+ostream & operator << (ostream & stream, const Rational& r)
 {
-	stream << r.getFraction();
+	stream << to_string(r.n) + '/' + to_string(r.m);
 	return stream;
 }
 istream & operator >> (istream & stream, Rational& r)
