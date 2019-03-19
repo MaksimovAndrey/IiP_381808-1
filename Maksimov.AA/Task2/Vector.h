@@ -1,7 +1,7 @@
 ﻿#pragma once
 using namespace std;
 
-enum TVectorEXType { vectorOUTOFSIZE, vectorOUTOFRANGE, vectorCOMPNULLVALUE, vectorINICOUTOFSIZE, vectorFILEREADEX };
+enum TVectorEXType { vectorOUTOFSIZE, vectorOUTOFRANGE, vectorINICOUTOFSIZE };
 struct TVectorException
 {
 	TVectorEXType extype; // вид исключения
@@ -14,18 +14,15 @@ private:
 	int size;
 	int *components;
 public:
-	Vector() { size = 0; }; // по умолчанию
+	Vector() { size = 0; components = NULL; }; // по умолчанию
 	Vector(const Vector& vec); // копирования
 	Vector(string path); // преобразования типа
 	explicit Vector(int _size); // инициализатор
-	Vector(int _size, int c1); // инициализатор
-	Vector(int _size, int c1, int c2); // инициализатор
-	Vector(int _size, int c1, int c2, int c3); // инициализатор
+	Vector(int _size, int c[]); // инициализатор
 	~Vector(); // деструктор
 
 	int getSize() { return size; }; // узнать размер вектора
 	void setSize(int _size); // задать размер вектора
-	string getFile(string name); // сохранение в файл, возвращает название файла
 	double length(); // длина
 
 	int& operator[] (int index); // операция индексации

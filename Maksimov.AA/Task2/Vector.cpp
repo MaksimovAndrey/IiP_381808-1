@@ -11,12 +11,7 @@ Vector::Vector(const Vector&vec)
 	size = vec.size;
 	components = new int[size];
 	for (int i = 0; i < size; ++i)
-	{
-		if (vec.components[i] == NULL)
-			throw TVectorException(vectorCOMPNULLVALUE, i);
-		else
-			components[i] = vec.components[i];
-	}
+		components[i] = vec.components[i];
 }
 Vector::Vector(string path)
 {
@@ -24,21 +19,12 @@ Vector::Vector(string path)
 	file.open(path);
 	int _size;
 	file >> _size;
-	if (_size > 0 && _size < 21)
+	if (_size > 0)
 	{
 		size = _size;
 		components = new int[size];
 		for (int i = 0; i < size; ++i)
-			components[i] = NULL;
-		for (int i = 0; i < size; ++i)
-		{
 			file >> components[i];
-			if (components[i] == NULL)
-			{
-				file.close();
-				throw TVectorException(vectorFILEREADEX, i);
-			}
-		}
 		file.close();
 	}
 	else
@@ -49,91 +35,48 @@ Vector::Vector(string path)
 }
 Vector::Vector(int _size)
 {
-	if (_size > 20)
+	if (_size < 1)
 		throw TVectorException(vectorOUTOFSIZE, _size);
 	else
 	{
 		size = _size;
 		components = new int[size];
+	}
+}
+Vector::Vector(int _size, int c[])
+{
+	if (_size < 1)
+		throw TVectorException(vectorINICOUTOFSIZE, _size);
+	else
+	{
+		size = _size;
+		components = new int[size];
 		for (int i = 0; i < size; ++i)
-			components[i] = NULL;
-	}
-}
-Vector::Vector(int _size, int c1)
-{
-	if (_size != 1)
-		throw TVectorException(vectorINICOUTOFSIZE, _size);
-	else
-	{
-		size = _size;
-		components = new int[size];
-		components[0] = c1;
-	}
-}
-Vector::Vector(int _size, int c1, int c2)
-{
-	if (_size != 2)
-		throw TVectorException(vectorINICOUTOFSIZE, _size);
-	else
-	{
-		size = _size;
-		components = new int[size];
-		components[0] = c1;
-		components[1] = c2;
-	}
-}
-Vector::Vector(int _size, int c1, int c2, int c3)
-{
-	if (_size != 3)
-		throw TVectorException(vectorINICOUTOFSIZE, _size);
-	else
-	{
-		size = _size;
-		components = new int[size];
-		components[0] = c1;
-		components[1] = c2;
-		components[2] = c3;
+			components[i] = c[i];
 	}
 }
 Vector::~Vector()
 {
 	size = 0;
 	delete[] components;
+	components = NULL;
 }
 void Vector::setSize(int _size)
 {
-	if (_size > 20 || _size < 0)
+	if (_size < 0)
 		throw TVectorException(vectorOUTOFSIZE, _size);
 	else
 	{
 		size = _size;
 		delete[] components;
 		components = new int[size];
-		for (int i = 0; i < size; ++i)
-			components[i] = NULL;
 	}
-};
-string Vector::getFile(string name)
-{
-	ofstream file;
-	name += ".txt";
-	file.open(name);
-	file << size;
-	for (int i = 0; i < size; ++i)
-		file << '\n' << components[i];
-	file.close();
-	return name;
 }
 double Vector::length()
 {
 	double result = 0;
 	for (int i = 0; i < size; ++i)
-	{
-		if (components[i] != NULL)
 			result += components[i] * components[i];
-		else
-			throw TVectorException(vectorCOMPNULLVALUE, i);
-	}
 	return sqrt(result);
 }
 int& Vector::operator[] (int index)
@@ -152,11 +95,17 @@ Vector& Vector::operator= (const Vector& vec)
 {
 	if (this != &vec)
 	{
-		delete[] components;
-		size = vec.size;
-		components = new int[size];
-		for (int i = 0; i < size; ++i)
-			(*this)[i] = vec.components[i];
+		if (size != vec.size)
+		{
+			delete[] components;
+			size = vec.size;
+			components = new int[size];
+			for (int i = 0; i < size; ++i)
+				(*this)[i] = vec.components[i];
+		}
+		else
+			for (int i = 0; i < size; ++i)
+				(*this)[i] = vec.components[i];
 	}
 	return *this;
 }int Vector::operator* (const Vector& vec)
@@ -165,12 +114,7 @@ Vector& Vector::operator= (const Vector& vec)
 	{
 		int result = 0;
 		for (int i = 0; i < size; ++i)
-		{
-			if (components[i] != NULL && vec.components[i] != NULL)
-				result += components[i] * vec.components[i];
-			else
-				throw TVectorException(vectorCOMPNULLVALUE, i);
-		}
+			result += components[i] * vec.components[i];
 		return result;
 	}
 	else
@@ -182,12 +126,7 @@ Vector Vector::operator+ (const Vector& vec)
 	{
 		Vector result(size);
 		for (int i = 0; i < size; ++i)
-		{
-			if (components[i] != NULL && vec.components[i] != NULL)
 				result.components[i] = components[i] + vec.components[i];
-			else
-				throw TVectorException(vectorCOMPNULLVALUE, i);
-		}
 		return result;
 	}
 	else
@@ -198,12 +137,7 @@ Vector Vector::operator+= (const Vector& vec)
 	if (size == vec.size)
 	{
 		for (int i = 0; i < size; ++i)
-		{
-			if (components[i] != NULL && vec.components[i] != NULL)
-				components[i] += vec.components[i];
-			else
-				throw TVectorException(vectorCOMPNULLVALUE, i);
-		}
+			components[i] += vec.components[i];
 		return *this;
 	}
 	else
@@ -221,11 +155,12 @@ istream& operator>> (istream& stream, Vector& vec)
 {
 	int tmp;
 	stream >> tmp;
-	if (tmp < 0 || tmp > 20)
+	if (tmp < 0)
 		throw TVectorException(vectorOUTOFSIZE, tmp);
 	else
 	{
 		vec.size = tmp;
+		delete[] vec.components;
 		vec.components = new int[tmp];
 		for (int i = 0; i < vec.size; ++i)
 			stream >> vec.components[i];

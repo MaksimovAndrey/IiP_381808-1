@@ -25,18 +25,22 @@ int main()
 		cout << "\nУстановить размер вектора: ";
 		cin >> tmp;
 		vector1.setSize(tmp);
-		cout << "\nПолучение размера вектора: " << vector1.getSize();
-		cout << "\nУстановить компоненту вектора (индекс и число): ";
+		cout << "Получение размера вектора: " << vector1.getSize();
+		cout << "\n\nУстановить компоненту вектора (индекс и число): ";
 		cin >> tmp >> tmp1;
 		vector1[tmp] = tmp1;
 		cout << "\nИндексация. Компонента " << tmp << " = " << vector1[tmp];
-		cout << "\nСохранение вектора в файл. Название файла: ";
+		cout << "\n\nСохранение вектора в файл. Название файла: ";
 		cin >> tmpstr;
-		cout << "Сохранение вектора в файл. Название выходного файла: " << vector1.getFile(tmpstr);
+		tmpstr += ".txt";
+		ofstream file;
+		file.open(tmpstr);
+		file << vector1;
+		cout << "Сохранение вектора в файл.";
 		cout << "\nВведите путь файла с вектором (вместо \ - \\ или /): ";
 		cin >> tmpstr;
 		Vector vector3(tmpstr);
-		cout << "\nЧтение вектора из файла: " << vector3;
+		cout << "Чтение вектора из файла: " << vector3;
 		cout << "\nНажмите любую клавишу, чтобы завершить работу...";
 	}
 	catch (TVectorException ex)
@@ -49,17 +53,9 @@ int main()
 		{
 			cout << "Выход за пределы массива компонент вектора. Индекс: " << ex.bspos << endl;
 		}
-		if (ex.extype == vectorCOMPNULLVALUE)
-		{
-			cout << "Компонента вектора не задана. Индекс компоненты: " << ex.bspos << endl;
-		}
 		if (ex.extype == vectorINICOUTOFSIZE)
 		{
-			cout << "При инициализации вектора превышен допустимый размер вектора. Размер: " << ex.bspos << endl;
-		}
-		if (ex.extype == vectorFILEREADEX)
-		{
-			cout << "При чтении файла произошла ошибка. Компонента не найдена. Индекс компоненты: " << ex.bspos << endl;
+			cout << "Недопустимый размер вектора. Размер: " << ex.bspos << endl;
 		}
 		cout << "\nНажмите любую клавишу, чтобы завершить работу...";
 	}
