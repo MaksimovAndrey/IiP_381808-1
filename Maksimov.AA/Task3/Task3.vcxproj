@@ -18,6 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Dictionary.cpp" />
+    <ClCompile Include="TestDictionary.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dictionary.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{958E75D6-6BB5-485C-888A-8130B9AA166F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

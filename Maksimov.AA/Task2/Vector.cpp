@@ -108,7 +108,8 @@ Vector& Vector::operator= (const Vector& vec)
 				(*this)[i] = vec.components[i];
 	}
 	return *this;
-}int Vector::operator* (const Vector& vec)
+}
+int Vector::operator* (const Vector& vec)
 {
 	if (size == vec.size)
 	{
