@@ -1,11 +1,12 @@
 ﻿#pragma once
 using namespace std;
 #include "Event.h";
+#include <vector>
 
 class Pedometer
 {
 private:
-	Event* events;
+	vector<Event> events;
 	int eventsCount;
 public:
 	Pedometer();

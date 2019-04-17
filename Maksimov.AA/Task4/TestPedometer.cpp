@@ -32,7 +32,7 @@ int main()
 	setlocale(LC_CTYPE, "Russian");
 	SetConsoleOutputCP(1251);
 	SetConsoleCP(1251);
-	Pedometer ped;
+	Pedometer ped("test.txt");
 	while (true)
 	{
 		int menu = 0;

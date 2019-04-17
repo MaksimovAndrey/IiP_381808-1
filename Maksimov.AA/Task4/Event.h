@@ -18,7 +18,6 @@ public:
 	int month; // месяц
 	int day; // день
 	int count; // количество шагов
-	Event() {};
 	void Inic(string date, int start_hour, int start_min, int end_hour, int end_min, int _count); // инициализация события
 	string GetDate(); // получение даты
 	Event& Event::operator= (const Event& d); // =

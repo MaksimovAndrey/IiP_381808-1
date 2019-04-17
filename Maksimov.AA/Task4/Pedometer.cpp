@@ -6,6 +6,7 @@
 #include <math.h>
 #include <windows.h>
 #include <conio.h>
+#include <vector>
 #include "Pedometer.h"
 
 
@@ -136,15 +137,10 @@ int Pedometer::AverageStepsAllTime()
 }
 void Pedometer::AddEvent(string p0, int p1, int p2, int p3, int p4, int p5)
 {
-	Event *tempEvents = new Event[eventsCount];
-	for (int i = 0; i < eventsCount; i++)
-		tempEvents[i] = events[i];
-	events = new Event[eventsCount + 1];
-	for (int i = 0; i < eventsCount; i++)
-		events[i] = tempEvents[i];
-	events[eventsCount].Inic(p0, p1, p2, p3, p4, p5);
+	Event temp;
+	temp.Inic(p0, p1, p2, p3, p4, p5);
+	events.emplace_back(temp);
 	++eventsCount;
-	delete[] tempEvents;
 }
 string Pedometer::FindEvents(string p0, int p1, int p2)
 {
@@ -173,29 +169,32 @@ ostream& operator<< (ostream& stream, const Pedometer& ped)
 istream& operator>> (istream& stream, Pedometer& ped)
 {
 	stream >> ped.eventsCount;
-	if (ped.events != NULL)
-		delete[] ped.events;
-	ped.events = new Event[ped.eventsCount];
+	if (ped.eventsCount != 0)
+		ped.events.clear();
+	Event temp;
 	for (int i = 0; i < ped.eventsCount; ++i)
+	{
+		ped.events.emplace_back(temp);
 		stream >> ped.events[i];
+	}
 	return stream;
 }
 
 Pedometer::Pedometer()
 {
-	events = NULL;
 	eventsCount = 0;
 }
 Pedometer::Pedometer(int event_count)
 {
-	events = new Event[event_count];
 	eventsCount = event_count;
 	string p0;
 	int p1, p2, p3, p4, p5;
+	Event temp;
 	for (int i = 0; i < event_count; ++i)
 	{
 		cin >> p0 >> p1 >> p2 >> p3 >> p4 >> p5;
-		events[i].Inic(p0, p1, p2, p3, p4, p5);
+		temp.Inic(p0, p1, p2, p3, p4, p5);
+		events.emplace_back(temp);
 	}
 }
 Pedometer::Pedometer(string path)
@@ -207,6 +206,5 @@ Pedometer::Pedometer(string path)
 }
 Pedometer::~Pedometer()
 {
-	delete[] events;
-	events = NULL;
+	events.clear();
 }
